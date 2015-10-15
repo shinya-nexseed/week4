@@ -5,11 +5,16 @@
     // セッションへデータの保存
     // $_SESSION["site_title"] = "Online_bbs";
 
-    // セッションからデータの取得
-    echo $_SESSION["nickname"];
+
+    // if (isset($_SESSION["nickname"])) {
+    //     // セッションからデータの取得
+    //     echo $_SESSION["nickname"];
+    // }
+
+
 
     // DBへの接続
-    $db = mysqli_connect('localhost','root','mysql','online_bbs');
+    $db = mysqli_connect('mysql101.phy.lolipop.lan','LAA0670492','mysql','LAA0670492-onlinebbs');
     mysqli_set_charset($db,'utf8');
 ?>
 
@@ -34,6 +39,7 @@
       $_SESSION["nickname"] = $nickname;
 
       mysqli_query($db,$sql);
+      header('Location: bbs.php');
     }
 ?>
 
@@ -67,7 +73,7 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
-                  <li class="hidden">
+<!--                   <li class="hidden">
                       <a href="#page-top"></a>
                   </li>
                   <li class="page-scroll">
@@ -78,7 +84,7 @@
                   </li>
                   <li class="page-scroll">
                       <a href="#contact">Contact</a>
-                  </li>
+                  </li> -->
               </ul>
           </div>
           <!-- /.navbar-collapse -->
@@ -92,7 +98,20 @@
         <form action="bbs.php" method="post">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" name="nickname" class="form-control" id="validate-text" placeholder="nickname" required>
+              <?php // echo '<input type="text" name="nickname" class="form-control" id="validate-text" placeholder="nickname" value="' . $_SESSION["nickname"] . '" required>'  ?>
+              
+              <?php 
+                  if (isset($_SESSION["nickname"])) {
+                      echo sprintf('<input type="text" name="nickname" class="form-control"
+                       id="validate-text" placeholder="nickname" value="%s" required>',
+                          $_SESSION["nickname"]
+                      );
+                  } else {
+                      echo '<input type="text" name="nickname" class="form-control"
+                       id="validate-text" placeholder="nickname" required>';
+                  }
+              ?>
+
               <span class="input-group-addon danger"><span class="glyphicon glyphicon-remove"></span></span>
             </div>
             
